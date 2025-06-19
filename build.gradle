@@ -84,8 +84,8 @@ dependencies {
     runtimeOnly "curse.maven:bbl-core-1135181:6621698"
 
     //JEI
-    compileOnly "curse.maven:jei-238222:6617262"
-    runtimeOnly "curse.maven:jei-238222:6617262"
+    //compileOnly "curse.maven:jei-238222:6617262"
+    //runtimeOnly "curse.maven:jei-238222:6617262"
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -156,7 +156,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.addOptional("jei") // JEI
     mainFile.addRequirement("bbl-core")
     mainFile.releaseType = "release"
-    mainFile.gameVersions.addAll("1.21.5")
+    mainFile.gameVersions.addAll(minecraft_version)
 }
 
 tasks.getByName("modrinth").setGroup("modpublishing")
@@ -168,7 +168,7 @@ modrinth {
     versionName = "bbl-flight-blocks-" + "$minecraft_version" + "-" + "$mod_version"
     uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
 
-    gameVersions.addAll("1.21.5")
+    gameVersions.addAll(minecraft_version)
 
     loaders = ["neoforge"]
     changelog = project.changelog

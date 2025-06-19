@@ -15,7 +15,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -159,14 +162,14 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.saveAdditional(compoundTag, provider);
-        compoundTag.putBoolean("showRange", showRange);
+    protected void saveAdditional(@NotNull ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        valueOutput.putBoolean("showRange", showRange);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        showRange = compoundTag.getBooleanOr("showRange", false);
-        super.loadAdditional(compoundTag, provider);
+    protected void loadAdditional(ValueInput valueOutput) {
+        super.loadAdditional(valueOutput);
+        showRange = valueOutput.getBooleanOr("showRange", false);
     }
 }
