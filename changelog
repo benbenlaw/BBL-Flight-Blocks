@@ -1,6 +1,14 @@
 Changelog BBL Flight Blocks
 
-//1.22 tiered flight blocks, effect blocks?
+//26.1 tiered flight blocks, effect blocks?
+
+2.3.0
+- Updated to Minecraft 1.21.11
+
+2.2.0
+- Updated to Minecraft 1.21.10
+- Moved parchment mapping to gradle.properties
+- Updated neoforge.mods.toml to use new format
 
 1.0.9
 Added Chinese translation thanks to HanlieChina on github

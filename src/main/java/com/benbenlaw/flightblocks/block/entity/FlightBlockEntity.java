@@ -1,23 +1,23 @@
 package com.benbenlaw.flightblocks.block.entity;
 
+import com.benbenlaw.flightblocks.block.FlightBlockEntities;
 import com.benbenlaw.flightblocks.config.StartupConfig;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static com.benbenlaw.flightblocks.event.FlightBlockEventHandler.playersWithFlightEnabled;
@@ -66,7 +66,7 @@ public class FlightBlockEntity extends BlockEntity {
             }
         } else {
             showRange = true;
-            player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.range", RANGE));
+            player.sendSystemMessage(Component.translatable("chat.flightblocks.range", RANGE));
         }
     }
 
@@ -85,38 +85,38 @@ public class FlightBlockEntity extends BlockEntity {
 
         // Along X edges (4 edges)
         for (int x = minX; x <= maxX; x += step) {
-            spawnParticle(level, player, x + 0.5, minY + 0.5, minZ + 0.5);
-            spawnParticle(level, player, x + 0.5, minY + 0.5, maxZ + 0.5);
-            spawnParticle(level, player, x + 0.5, maxY + 0.5, minZ + 0.5);
-            spawnParticle(level, player, x + 0.5, maxY + 0.5, maxZ + 0.5);
+            spawnParticle(level,x + 0.5, minY + 0.5, minZ + 0.5);
+            spawnParticle(level,x + 0.5, minY + 0.5, maxZ + 0.5);
+            spawnParticle(level,x + 0.5, maxY + 0.5, minZ + 0.5);
+            spawnParticle(level,x + 0.5, maxY + 0.5, maxZ + 0.5);
         }
 
         // Along Y edges (4 edges)
         for (int y = minY; y <= maxY; y += step) {
-            spawnParticle(level, player, minX + 0.5, y + 0.5, minZ + 0.5);
-            spawnParticle(level, player, minX + 0.5, y + 0.5, maxZ + 0.5);
-            spawnParticle(level, player, maxX + 0.5, y + 0.5, minZ + 0.5);
-            spawnParticle(level, player, maxX + 0.5, y + 0.5, maxZ + 0.5);
+            spawnParticle(level, minX + 0.5, y + 0.5, minZ + 0.5);
+            spawnParticle(level, minX + 0.5, y + 0.5, maxZ + 0.5);
+            spawnParticle(level, maxX + 0.5, y + 0.5, minZ + 0.5);
+            spawnParticle(level, maxX + 0.5, y + 0.5, maxZ + 0.5);
         }
 
         // Along Z edges (4 edges)
         for (int z = minZ; z <= maxZ; z += step) {
-            spawnParticle(level, player, minX + 0.5, minY + 0.5, z + 0.5);
-            spawnParticle(level, player, minX + 0.5, maxY + 0.5, z + 0.5);
-            spawnParticle(level, player, maxX + 0.5, minY + 0.5, z + 0.5);
-            spawnParticle(level, player, maxX + 0.5, maxY + 0.5, z + 0.5);
+            spawnParticle(level, minX + 0.5, minY + 0.5, z + 0.5);
+            spawnParticle(level, minX + 0.5, maxY + 0.5, z + 0.5);
+            spawnParticle(level, maxX + 0.5, minY + 0.5, z + 0.5);
+            spawnParticle(level, maxX + 0.5, maxY + 0.5, z + 0.5);
         }
     }
 
-    private void spawnParticle(ServerLevel level, ServerPlayer player, double x, double y, double z) {
+    private void spawnParticle(ServerLevel level, double x, double y, double z) {
         level.sendParticles(
-                player,
                 ParticleTypes.END_ROD,
-                true,
+                true,  // overrideLimiter
+                true,  // alwaysShow
                 x, y, z,
-                1,
-                0.0, 0.0, 0.0,
-                0.0
+                1,     // particle count
+                0.0, 0.0, 0.0,  // offsets
+                0.0             // speed
         );
     }
 
@@ -136,8 +136,8 @@ public class FlightBlockEntity extends BlockEntity {
                 for (double z = minZ; z < maxZ; z++) {
                     if (x == minX || x == maxX - 1 || y == minY || y == maxY - 1 || z == minZ || z == maxZ - 1) {
                         level.sendParticles(
-                                player,
                                 ParticleTypes.END_ROD,
+                                true,
                                 true,
                                 x + 0.5, y + 0.5, z + 0.5,
                                 1,
@@ -151,14 +151,13 @@ public class FlightBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        super.saveAdditional(compoundTag, provider);
-        compoundTag.putBoolean("showRange", showRange);
+    protected void saveAdditional(ValueOutput output) {
+       output.putBoolean("showRange", showRange);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        showRange = compoundTag.getBoolean("showRange");
-        super.loadAdditional(compoundTag, provider);
+    protected void loadAdditional(ValueInput input) {
+        showRange = input.getBooleanOr("showRange", false);
     }
+
 }

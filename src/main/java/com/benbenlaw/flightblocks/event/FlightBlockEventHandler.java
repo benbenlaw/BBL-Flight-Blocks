@@ -24,7 +24,7 @@ import java.util.Set;
 @EventBusSubscriber(modid = FlightBlocks.MOD_ID)
 public class FlightBlockEventHandler {
     public static final Set<ServerPlayer> playersWithFlightEnabled = new HashSet<>();
-    private static final int RANGE = StartupConfig.flightBlockRange.get();; // Define your flight block range here
+    private static final int RANGE = StartupConfig.flightBlockRange.get();
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -79,7 +79,7 @@ public class FlightBlockEventHandler {
             player.addTag("flight_blocks_flight");
             player.getAbilities().mayfly = true;
             player.onUpdateAbilities();
-            player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.enabled_flight").withStyle(ChatFormatting.GREEN));
+            player.displayClientMessage(Component.translatable("chat.flightblocks.enabled").withStyle(ChatFormatting.GREEN), false);
             playersWithFlightEnabled.add((ServerPlayer) player);
         }
     }
@@ -89,7 +89,7 @@ public class FlightBlockEventHandler {
             player.removeTag("flight_blocks_flight");
             player.getAbilities().mayfly = false;
             player.onUpdateAbilities();
-            player.sendSystemMessage(Component.translatable("block.flightblocks.flight_block.disabled_flight").withStyle(ChatFormatting.RED));
+            player.displayClientMessage(Component.translatable("chat.flightblocks.disabled").withStyle(ChatFormatting.RED), false);
             playersWithFlightEnabled.remove(player);
         }
     }
