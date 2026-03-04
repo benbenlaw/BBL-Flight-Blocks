@@ -85,7 +85,7 @@ public class FlightBlockEventHandler {
     }
 
     private static void disableFlight(Player player) {
-        if (!player.isCreative() && !player.isSpectator() && player.getAbilities().mayfly && player.getTags().contains("flight_blocks_flight")) {
+        if (!player.isCreative() && !player.isSpectator() && player.getAbilities().mayfly && player.entityTags().contains("flight_blocks_flight")) {
             player.removeTag("flight_blocks_flight");
             player.getAbilities().mayfly = false;
             player.onUpdateAbilities();

@@ -37,7 +37,6 @@ public class FBRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildRecipes() {
-
         //Flight Block
         shaped(RecipeCategory.MISC, FBBLocks.FLIGHT_BLOCK.get())
                 .pattern("ABA")
