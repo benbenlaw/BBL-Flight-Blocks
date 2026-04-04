@@ -28,6 +28,7 @@ public class FBLangProvider extends LanguageProvider {
 
         //Tooltips
         add("tooltip.flightblocks.shift", "Hold SHIFT for more info");
+        add("tooltip.flightblocks.flight_block", "Provies flight around the block! Right click to show range");
 
     }
 

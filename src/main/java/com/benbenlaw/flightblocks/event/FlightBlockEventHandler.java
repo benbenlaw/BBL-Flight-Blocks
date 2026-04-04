@@ -79,7 +79,7 @@ public class FlightBlockEventHandler {
             player.addTag("flight_blocks_flight");
             player.getAbilities().mayfly = true;
             player.onUpdateAbilities();
-            player.displayClientMessage(Component.translatable("chat.flightblocks.enabled").withStyle(ChatFormatting.GREEN), false);
+            player.sendOverlayMessage(Component.translatable("chat.flightblocks.enabled").withStyle(ChatFormatting.GREEN));
             playersWithFlightEnabled.add((ServerPlayer) player);
         }
     }
@@ -89,7 +89,7 @@ public class FlightBlockEventHandler {
             player.removeTag("flight_blocks_flight");
             player.getAbilities().mayfly = false;
             player.onUpdateAbilities();
-            player.displayClientMessage(Component.translatable("chat.flightblocks.disabled").withStyle(ChatFormatting.RED), false);
+            player.sendOverlayMessage(Component.translatable("chat.flightblocks.disabled").withStyle(ChatFormatting.RED));
             playersWithFlightEnabled.remove(player);
         }
     }

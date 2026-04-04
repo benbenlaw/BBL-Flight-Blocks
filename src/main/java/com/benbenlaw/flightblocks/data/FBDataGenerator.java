@@ -28,7 +28,7 @@ public class FBDataGenerator {
         generator.addProvider(true, new FBLangProvider(packOutput));
         generator.addProvider(true, new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(FBLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-        generator.addProvider(true, new FBModelProvider(packOutput));
+        //generator.addProvider(true, new FBModelProvider(packOutput));
         generator.addProvider(true, new FBRecipeProvider.Runner (packOutput, lookupProvider));
 
 
