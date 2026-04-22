@@ -2,8 +2,10 @@ package com.benbenlaw.flightblocks.block.custom;
 
 import com.benbenlaw.flightblocks.block.FlightBlockEntities;
 import com.benbenlaw.flightblocks.block.entity.FlightBlockEntity;
+import com.benbenlaw.flightblocks.block.entity.renderer.ClientRenderState;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +23,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static com.benbenlaw.flightblocks.block.entity.FlightBlockEntity.RANGE;
 
 public class FlightBlock extends BaseEntityBlock {
 
@@ -41,7 +45,8 @@ public class FlightBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof FlightBlockEntity) {
-                ((FlightBlockEntity) blockEntity).onRightClick((ServerPlayer) player);
+                ClientRenderState.toggleCollector(pos);
+                player.sendSystemMessage(Component.translatable("chat.flightblocks.range", RANGE));
             }
         }
         return InteractionResult.SUCCESS;

@@ -23,7 +23,7 @@ public class FBLangProvider extends LanguageProvider {
         //Flight Block Chat Messages
         add("chat.flightblocks.enabled", "Flight Enabled");
         add("chat.flightblocks.disabled", "Flight Disabled");
-        add("chat.flightblocks.range", "Range: %s, showing range, right click to disable range area!");
+        add("chat.flightblocks.range", "Range: %s");
         add("chat.flightblocks.info", "Place in world to allow flight around the block! Range: %s");
 
         //Tooltips
